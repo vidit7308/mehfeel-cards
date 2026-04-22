@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-dark: #0a0a0a;
+    --color-bg-panel: rgba(20, 20, 20, 0.6);
+    --color-gold: #D4AF37;
+    --color-gold-glow: rgba(212, 175, 55, 0.4);
+    --color-card: #ffffff;
+    --color-text-light: #f3f4f6;
+  }
+
+  /* STRICT 100vh/100vw LAYOUT */
+  html, body, #root {
+    @apply m-0 p-0 w-full h-full overflow-hidden;
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light);
+    font-family: "Cinzel", "Playfair Display", serif;
+  }
+
+  .font-sans-functional {
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  /* 3D Realistic Wood Table Setup */
+  .table-3d-container {
+    @apply w-full h-full relative overflow-hidden;
+    background-image: url('/wood_table.png');
+    background-size: cover;
+    background-position: center;
+    perspective: 1500px;
+    transform-style: preserve-3d;
+  }
+
+  /* Spotlight Overlay */
+  .table-spotlight {
+    @apply absolute inset-0 pointer-events-none;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.6) 80%, rgba(0,0,0,0.9) 100%);
+    z-index: 1;
+  }
+
+  /* UI overlay (Top Bar, Side Panels) that should NOT be 3D rotated */
+  .ui-overlay {
+    @apply absolute inset-0 pointer-events-none flex flex-col justify-between;
+    z-index: 50;
+  }
+
+  .ui-overlay > * {
+    pointer-events: auto; /* Re-enable pointer events for UI children */
+  }
+
+  .panel {
+    @apply bg-[var(--color-bg-panel)] backdrop-blur-md border border-[var(--color-gold)] border-opacity-20 shadow-2xl;
+    /* Removed rounded-lg here so it can be applied where needed, but let's keep it for compatibility */
+    border-radius: 0.5rem;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply px-4 py-2 rounded font-bold transition-all uppercase tracking-widest text-sm border font-sans-functional;
+  }
+  
+  .btn-primary {
+    @apply border-[var(--color-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black shadow-[0_0_15px_var(--color-gold-glow)];
+  }
+  
+  .btn-secondary {
+    @apply border-white/20 text-white/70 hover:bg-white/10 hover:text-white;
+  }
+
+  /* Realistic Cards */
+  .card-container {
+    @apply relative flex items-center justify-center;
+    width: 90px;
+    height: 126px;
+    transform-style: preserve-3d;
+  }
+
+  .card {
+    @apply absolute inset-0 rounded-lg flex flex-col justify-between p-2 select-none;
+    background-color: var(--color-card);
+    border: 1px solid rgba(0,0,0,0.1);
+    color: #111;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    /* Realistic shadow and bevel */
+    box-shadow: inset 0 0 4px rgba(255,255,255,0.8), inset 0 0 10px rgba(0,0,0,0.05), -2px 5px 15px rgba(0,0,0,0.4);
+    font-family: "Cinzel", serif;
+  }
+
+  .card-sm {
+    width: 60px;
+    height: 84px;
+    @apply p-1.5 rounded-md text-sm;
+  }
+
+  .card-back {
+    @apply absolute inset-0 rounded-lg shadow-xl;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border: 2px solid var(--color-gold);
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+  }
+
+  .card-back::after {
+    content: "G";
+    @apply absolute inset-0 flex items-center justify-center text-[var(--color-gold)] text-4xl opacity-50 font-bold;
+  }
+
+  .card-suit-hearts, .card-suit-diamonds {
+    color: #b91c1c; 
+  }
+
+  .card-suit-clubs, .card-suit-spades {
+    color: #000000; 
+  }
+
+  .trick-slot {
+    @apply w-[90px] h-[126px] rounded-lg border border-[var(--color-gold)] border-opacity-30 flex items-center justify-center;
+    background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%);
+  }
+}
+
+.card-playable {
+  cursor: pointer;
+}
+
+.card-invalid {
+  opacity: 0.5;
+  filter: grayscale(50%);
+  cursor: not-allowed;
+}
+
+.timer-track {
+  @apply h-1.5 bg-white/10 rounded-full overflow-hidden border border-white/5;
+}
+
+.timer-fill {
+  @apply h-full bg-[var(--color-gold)] transition-all ease-linear shadow-[0_0_10px_var(--color-gold)];
+}
